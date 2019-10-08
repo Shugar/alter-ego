@@ -5,8 +5,8 @@
       <div class="comment-list">
         <div
           class="comment-item"
-          v-for="item, index in comments"
-          :key="item"
+          v-for="(item, index) in comments"
+          :key="index"
         >
           <div class="comment-avatar"></div>
           <div class="comment-info">
@@ -17,10 +17,11 @@
 
       </div>
       <input
+        v-model="commentText"
         type="text"
         placehoder="Введи коммент"
       />
-      <button>Опубликовать</button>
+      <button @click="addCommentToList()"> Опубликовать</button>
     </form>
     <iframe
       ref="ta"
@@ -37,16 +38,25 @@ export default {
 
   data () {
     return {
+      currentUser: {
+        userId: 1,
+        name: 'Tigran',
+        comment: null
+      },
+      commentText: '',
       comments: [
         {
+          usedId: 2,
           name: 'Katerine',
           comment: 'Hey there! I have some problems'
         },
         {
+          userId: 3,
           name: 'Katerine',
           comment: 'Hey there!'
         },
         {
+          userId: 4,
           name: 'Katerine',
           comment: 'Hey'
         }
@@ -57,6 +67,15 @@ export default {
   methods: {
     select: event => {
       console.log(event)
+    },
+
+    addCommentToList () {
+      this.comments.push({
+        usedId: 5,
+        name: this.currentUser.name,
+        comment: this.commentText
+      })
+      this.commentText = '';
     }
   },
 
