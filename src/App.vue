@@ -75,7 +75,7 @@ export default {
         name: this.currentUser.name,
         comment: this.commentText
       })
-      this.commentText = '';
+      this.commentText = null
     }
   },
 
