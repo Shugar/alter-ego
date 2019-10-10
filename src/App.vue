@@ -16,57 +16,58 @@
             <div class="comment-name">{{ item.userData.name }}</div>
             {{ item.userData.comment }}
           </div>
-        </div> -->
-        <div
-          class="form-close"
-          @click="forms.splice(index, 1)"
-        >x</div>
-        <div
-          class="comment-list"
-          :key="index"
-        >
-          <div
-            class="comment-item"
-            v-for="(item, index) in comments"
-            :key="index"
-          >
+        </div>-->
+        <div class="form-close" @click="forms.splice(index, 1)">x</div>
+        <div class="comment-list" :key="index">
+          <div class="comment-item" v-for="(item, index) in comments" :key="index">
             <div class="comment-avatar"></div>
             <div class="comment-info">
               <div class="comment-name">{{ item.name }}</div>
               {{ item.comment }}
             </div>
           </div>
-
         </div>
-        <input
-          v-model="commentText"
-          type="text"
-          placehoder="Введи коммент"
-        />
-        <button @click="addCommentToList()"> Опубликовать</button>
+        <input v-model="commentText" type="text" placehoder="Введи коммент" />
+        <button @click="addCommentToList()">Опубликовать</button>
       </form>
+      <!-- <VueDnR
+        :key="tile.id"
+        :w="tile.width"
+        :h="tile.height"
+        :x="tile.x"
+        :y="tile.y"
+        :z="tile.zIndex"
+        :min-height="30"
+        :min-width="150"
+        @dragging="(...coords) => onDrag(coords, index)"
+        @resizing="(...size) => onResize(size, index)"
+        @activated="setTopPriority(tile.id)"
+        :parent="true"
+        :grid="[10, 10]"
+      >-->
       <div
         @click="event => this.createForm(event)"
         id="iframe-click-area"
         ref="clickArea"
         class="iframe-click-area"
-      >
-      </div>
-      <iframe
-        ref="ta"
-        id="iframe"
-        src="https://app.matter.online"
-        seamless
-      ></iframe>
+      ></div>
+      <!-- </VueDnR> -->
+      <iframe ref="ta" id="iframe" src="https://app.matter.online" seamless></iframe>
     </div>
   </div>
 </template>
 
 <script>
+import "vue-draggable-resizable/dist/VueDraggableResizable.css"
+import VueDnR from "vue-draggable-resizable"
 export default {
   name: 'App',
 
-  data () {
+  components: {
+    VueDnR
+  },
+
+  data() {
     return {
       isMouseDown: false,
       amountCardId: [],
@@ -91,7 +92,7 @@ export default {
   },
 
   methods: {
-    mainEH (event, name) {
+    mainEH(event, name) {
       this.mousePosition = [event.clientX, event.clientY]
       this.proccessingFormId = name
       this.elementPosition = [
@@ -103,7 +104,7 @@ export default {
       document.addEventListener('contextmenu', this.removeHandlers)
     },
 
-    calcEH (event) {
+    calcEH(event) {
       var vector = [
         -this.mousePosition[0] + event.clientX,
         -this.mousePosition[1] + event.clientY
@@ -121,14 +122,13 @@ export default {
       this.updatePosition()
     },
 
-    removeHandlers () {
+    removeHandlers() {
       document.removeEventListener('mousemove', this.calcEH)
       document.removeEventListener('mouseup', this.removeHandlers)
       document.removeEventListener('contextmenu', this.removeHandlers)
     },
 
-    updatePosition () {
-      console.log()
+    updatePosition() {
       Object.keys(this.$refs).map(e => {
         if (e === this.proccessingFormId) {
           this.$refs[this.proccessingFormId][0].style.left =
@@ -139,7 +139,7 @@ export default {
       })
     },
 
-    createForm (event) {
+    createForm(event) {
       const x = event.clientX
       const y = event.clientY
 
@@ -171,7 +171,7 @@ export default {
     //   this.isMouseDown = false
     // },
 
-    addCommentToList (x, y) {
+    addCommentToList(x, y) {
       this.comments.push({
         x: x,
         y: y,
@@ -184,7 +184,7 @@ export default {
     }
   },
 
-  mounted () {}
+  mounted() { }
 }
 </script>
 
